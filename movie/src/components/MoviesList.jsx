@@ -1,27 +1,32 @@
 import React from 'react'
- import axios from 'axios';
+import Loading from './Loading'
+import Movi from './Movi'
+import { useGlobalContext } from "../Context";
 
 
-const MoviesList = async  () => {
-   
 
-const options = {
-  method: "GET",
-  url: "https://moviesdatabase.p.rapidapi.com/titles/series/%7BseriesId%7D",
-  headers: {
-    "X-RapidAPI-Key": "73f66a6209msh6bc008465261f32p175d56jsn95c7acaa83d9",
-    "X-RapidAPI-Host": "moviesdatabase.p.rapidapi.com",
-  },
-};
+const MoviesList =  () => {
 
-try {
-	const response = await axios.request(options);
-	console.log(response.data);
-} catch (error) {
-	console.error(error);
-}
+  const { movies, loading } = useGlobalContext();
+
+  
+  if (loading) {
+    return <Loading />;
+  }
+
+  if (movies.length < 1) {
+    return <h2 className="section-title">there's no movie available</h2>;
+  }
+
   return (
-    <div>MoviesList</div>
+    <section>
+      <h2 className='section-title'>movies</h2>
+      <div className="cocktails-center">
+        {movies.map((item) => {
+          return < Movi key={item.id} {...item} />
+        })}
+      </div>
+    </section>
   )
 }
 
